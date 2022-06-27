@@ -7,7 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fisei.uta.ec.app_kotlin_003.databinding.ViewMovieItemBinding
 
-class MoviesAdapter (private val movies: List<Movie>) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>(){
+/*
+interface MovieClickedListener {
+
+    // movie: para saber sobre que pelicula se presiono (clic)
+    fun onMovieClicked(movie: Movie) // (Movie)-> Unit
+}
+*/
+
+// primera forma: utilizando interfaces
+//class MoviesAdapter (private val movies: List<Movie>, private val movieClickedListener: MovieClickedListener) :
+
+// segunda forma: utilizando (lambdas)
+class MoviesAdapter (private val movies: List<Movie>, private val movieClickedListener: (Movie) -> Unit) :
+    RecyclerView.Adapter<MoviesAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     // primer metodo
@@ -25,8 +38,21 @@ class MoviesAdapter (private val movies: List<Movie>) : RecyclerView.Adapter<Mov
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // obtener la pelicula actual donde se presione
+        val movie = movies[position]
+
         // actualizar (enlazar) la fila cual referencia (el titulo y la imagen actual)
-        holder.bind(movies[position])
+        //holder.bind(movies[position])
+        holder.loadMovie(movie)
+
+        holder.itemView.setOnClickListener {
+            // primera forma: utilizando interfaces
+            //movieClickedListener.onMovieClicked(movie)
+
+            // segunda forma: utilizando (lambdas)
+            movieClickedListener(movie)
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -42,7 +68,8 @@ class MoviesAdapter (private val movies: List<Movie>) : RecyclerView.Adapter<Mov
     class ViewHolder (private val binding: ViewMovieItemBinding) : RecyclerView.ViewHolder (binding.root) {
 
         // recuperar una registro
-        fun bind (movie: Movie) {
+       // fun bind (movie: Movie) {
+        fun loadMovie (movie: Movie) {
             // asignar el titulo y la imagen de la pelicula
             binding.textViewTitle.text = movie.title
 
