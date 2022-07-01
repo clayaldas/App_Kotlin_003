@@ -15,10 +15,12 @@
 
     <TextView
         android:id="@+id/textViewTitle"
+        style="@style/personalTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="10sp"
         tools:text="Titulo pelicula" />
 </LinearLayout>
